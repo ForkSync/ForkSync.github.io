@@ -11,12 +11,12 @@
       if (window.location.href.match(/\?code=(.*)/)) {
         var code = window.location.href.match(/\?code=(.*)/)[1];
 
-        $.getJSON('https://upriver.herokuapp.com/authenticate/' + code, function(data) {
+        $.getJSON('https://forksync.herokuapp.com/authenticate/' + code, function(data) {
           sessionStorage.setItem('token', data.token);
           window.location = 'https://upriver.github.io/';
         });
       } else {
-        window.location = 'https://github.com/login/oauth/authorize?client_id=d39dea3b2637ce0c4fdb&scope=repo';
+        window.location = 'https://github.com/login/oauth/authorize?client_id=0f99374b8de9e7c0df5d&scope=repo';
       }
     </script>
   </body>
