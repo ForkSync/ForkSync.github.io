@@ -13,7 +13,7 @@
 
         $.getJSON('https://forksync.herokuapp.com/authenticate/' + code, function(data) {
           sessionStorage.setItem('token', data.token);
-          window.location = 'https://upriver.github.io/';
+          window.location = 'https://forksync.github.io/';
         });
       } else {
         window.location = 'https://github.com/login/oauth/authorize?client_id=0f99374b8de9e7c0df5d&scope=repo';
