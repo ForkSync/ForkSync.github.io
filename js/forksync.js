@@ -1,6 +1,6 @@
 'use strict';
 
-function Upriver(token) {
+function ForkSync(token) {
   $.ajaxSetup({
     headers: {
       Authorization: 'token ' + token
@@ -39,17 +39,17 @@ function Upriver(token) {
   });
 }
 
-Upriver.prototype.getRepo = function getRepo(repo, callback) {
+ForkSync.prototype.getRepo = function getRepo(repo, callback) {
   $.getJSON('https://api.github.com/repos/' + repo, callback);
 };
 
-Upriver.prototype.getRepos = function getRepos(callback) {
+ForkSync.prototype.getRepos = function getRepos(callback) {
   $.getJSON('https://api.github.com/user', function(user) {
     $.getJSON(user.repos_url, callback);
   });
 };
 
-Upriver.prototype.addRepo = function addRepo(repo) {
+ForkSync.prototype.addRepo = function addRepo(repo) {
   $(document.createElement('option'))
     .text(repo.full_name)
     .attr('data-name', repo.full_name)
@@ -63,7 +63,7 @@ Upriver.prototype.addRepo = function addRepo(repo) {
     .appendTo('#parentRepo');
 };
 
-Upriver.prototype.loadRepos = function loadRepos(callback) {
+ForkSync.prototype.loadRepos = function loadRepos(callback) {
   this.getRepos(function(repos) {
     var queue = async.queue(function(repo, callback) {
       this.getRepo(repo.full_name, function(repo) {
@@ -82,11 +82,11 @@ Upriver.prototype.loadRepos = function loadRepos(callback) {
   }.bind(this));
 };
 
-Upriver.prototype.getBranches = function getBranches(repo, callback) {
+ForkSync.prototype.getBranches = function getBranches(repo, callback) {
   $.getJSON('https://api.github.com/repos/' + repo + '/branches', callback);
 };
 
-Upriver.prototype.addBranch = function addBranch(element, branch) {
+ForkSync.prototype.addBranch = function addBranch(element, branch) {
   $(document.createElement('option'))
     .text(branch.name)
     .attr('data-name', branch.name)
@@ -95,7 +95,7 @@ Upriver.prototype.addBranch = function addBranch(element, branch) {
     .appendTo(element);
 };
 
-Upriver.prototype.loadBranches = function loadBranches(repo, element) {
+ForkSync.prototype.loadBranches = function loadBranches(repo, element) {
   this.getBranches(repo, function(branches) {
     $(element).empty();
     branches.forEach(function(branch) {
@@ -104,7 +104,7 @@ Upriver.prototype.loadBranches = function loadBranches(repo, element) {
   }.bind(this));
 };
 
-Upriver.prototype.setCommit = function setCommit(repo, branch, sha, force) {
+ForkSync.prototype.setCommit = function setCommit(repo, branch, sha, force) {
   $.ajax({
     type: 'PATCH',
     dataType: "json",
@@ -122,7 +122,7 @@ $(function() {
   if (sessionStorage.getItem('token')) {
     $('#signin').hide();
     $('#controls').show();
-    window.upriver = new Upriver(sessionStorage.getItem('token'));
+    window.forksync = new ForkSync(sessionStorage.getItem('token'));
   }
 });
 
